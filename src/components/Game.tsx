@@ -170,7 +170,13 @@ const Game: React.FC = () => {
                     />
                     {!joinRoomCode && <button onClick={createRoom}>Create Room</button>}
                     <br />
-                    <input type="text" placeholder="Room code" value={joinRoomCode} onChange={(e) => setJoinRoomCode(e.target.value)} onKeyDown={handleJoinKeyDown} />
+                    <input
+                        type="text"
+                        placeholder="Room code"
+                        maxLength={4}
+                        value={joinRoomCode}
+                        onChange={(e) => setJoinRoomCode(e.target.value)}
+                        onKeyDown={handleJoinKeyDown} />
                     <button disabled={joinRoomCode.length < 4} onClick={joinRoom}>Join Room</button>
                 </div>
             ) : (
