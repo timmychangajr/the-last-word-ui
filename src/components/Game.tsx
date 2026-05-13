@@ -6,7 +6,6 @@ import type { RoomUpdatePayload, RoomUser, ScoreFeedback, WordEntry } from '../t
 import './Game.css';
 
 const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
-console.log("Current API URL being used:", API_BASE);
 
 const Game: React.FC = () => {
     const [roomCode, setRoomCode] = useState('');
@@ -30,7 +29,11 @@ const Game: React.FC = () => {
 
     useEffect(() => {
         if (!cableRef.current) {
-            cableRef.current = createConsumer(import.meta.env.VITE_CABLE_URL ?? 'ws://localhost:3000/cable');
+            const baseCableUrl = import.meta.env.VITE_CABLE_URL || 'ws://localhost:3000/cable';
+            // Forcing the /cable path if it's missing from the env variable
+            const finalCableUrl = baseCableUrl.endsWith('/cable') ? baseCableUrl : `${baseCableUrl}/cable`;
+
+            cableRef.current = createConsumer(finalCableUrl);
         }
         return () => {
             if (channelRef.current) {
@@ -247,7 +250,7 @@ const Game: React.FC = () => {
                         <div className="log-entries">
                             {scoreFeedbacks.map((feedback, idx) => (
                                 <div
-                                    className={`score-feedback ${feedback.points ? (feedback.points >= 0 ? 'positive' : 'negative'): '' }`}
+                                    className={`score-feedback ${feedback.points ? (feedback.points >= 0 ? 'positive' : 'negative') : ''}`}
                                     key={idx}>
                                     <div className='points'>
                                         <div className='info'>
