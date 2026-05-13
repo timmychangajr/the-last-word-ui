@@ -1,0 +1,81 @@
+/* src/components/BufferDisplay.css */
+.buffer-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem;
+  /* border: 2px solid #252525; */
+  margin: 0.5rem 0;
+  border-radius: 8px;
+  background-color: #2c2026;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2rem;
+  /* min-height: 4rem; */
+  align-items: center;
+}
+
+.word-entry {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease-in-out;
+  animation: slideIn 0.3s ease-out;
+  align-items: center;
+  cursor: pointer;
+  background: none;
+  /* Reset button default */
+}
+
+.word-entry.poet {
+  background-color: #007bff;
+  color: white;
+}
+
+.word-entry.noise {
+  background-color: #3d3c3c;
+  color: white;
+}
+
+.word-entry.poet:hover,
+.word-entry.noise:hover {
+  background-color: #20867c;
+}
+
+.word-text {
+  font-size: 0.90rem;
+  font-weight: bold;
+}
+
+.word-username {
+  font-size: 0.85rem;
+  font-style: italic;
+  opacity: 0.8;
+  margin-right: 0.5rem;
+}
+
+.word-health {
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
+  /* font-weight: bold; */
+  margin-left: 0.5rem;
+  padding: 0.15rem 0.4rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.word-health.locked {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,87 @@
+/* src/components/BufferUserDisplay.css */
+.user-container {
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 2px solid #333;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    /* min-width: 160px; */
+    text-align: center;
+    /* margin-top: 0; */
+    /* height: auto; */
+}
+
+.user-header {
+    margin-top: 0;
+    font-weight: bold;
+    /* border-bottom: 1px solid #444; */
+    padding-bottom: 0.5rem;
+}
+
+.user-row {
+    padding: 0.5rem 12px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    /* display: flex; */
+    /* justify-content: space-between; */
+    color: antiquewhite;
+    font-weight: bold;
+}
+
+.tally, .health {
+    display: flex;
+    /* flex-direction: row; */
+    justify-content:  space-between;
+}
+.health {
+    margin-top: 0.5rem;
+    white-space: nowrap;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.user-row.poet {
+    background: #007bff; /* Teal/Green for the player */
+    /* border-left: 4px solid #4ade80; */
+    /* background: rgba(74, 222, 128, 0.1); */
+}
+
+.user-row.noise {
+    background: #2b2a2a84; /* Red/Coral for opponents */
+    opacity: 0.5;
+    /* border-left: 4px solid #f87171; */
+    /* background: rgba(248, 113, 113, 0.1); */
+}
+
+.user-score {
+    /* font-weight: bold; */
+    font-size: 0.8rem;
+}
+.user-score.value {
+    padding: 0.1rem 0.5rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+.user-name {
+    white-space: nowrap;
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+.ready-indicator {
+    font-size: 1.3rem;
+    color: #55ec75;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

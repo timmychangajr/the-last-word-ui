@@ -1,0 +1,309 @@
+/* src/components/Game.css */
+.app-header {
+  display: flex;
+}
+
+.app-header h1 {
+  font-family: 'Courier New', monospace;
+}
+
+.game {
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 1rem;
+  /* min-height: 100vh; */
+  display: flex;
+  flex-direction: column;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 1rem;
+}
+
+.buffer-parent {
+  min-height: 60vh;
+}
+
+.word-container {
+  width: 100%;
+  /* margin: auto; */
+  text-align: left;
+  /* min-height: 100vh; */
+  /* justify-content: center;
+  align-items: center; */
+}
+
+.game h1 {
+  text-align: center;
+}
+
+.game button {
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.game input {
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-color: rgb(41, 41, 41);
+  border: 2px solid #5b5b5b;
+  border-radius: 8px;
+  outline: none;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.winner {
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  margin: 0;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.final-scores {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.final-score-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0.75rem 1rem;
+  font-size: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.final-score-row:last-child {
+  border-bottom: none;
+}
+
+.final-score-row .score {
+  font-weight: bold;
+  color: #4ade80;
+}
+
+.exit-btn:hover {
+  color: #d88737;
+}
+
+.ready-btn,
+.exit-btn {
+  font-size: 1.1rem;
+}
+
+.ready-btn {
+  border: 2px solid #10b981 !important;
+}
+
+.ready-btn:hover {
+  color: #15d998;
+}
+
+.ready-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.waiting-text {
+  font-size: 1.1rem;
+  color: #a78bfa;
+  font-style: italic;
+  margin: 0;
+}
+
+.activity-log {
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px solid #333;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  min-width: 200px;
+}
+
+.activity-log text {
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+.log-header {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: #888;
+  border-bottom: 3px solid #333;
+  padding-bottom: 0.5rem;
+}
+
+/* activity log messages*/
+.score-feedback {
+  font-size: 0.8rem;
+  color: white;
+  pointer-events: none;
+  position: relative;
+  animation: slideInRight 0.3s ease-out;
+  margin-bottom: 4px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.score-feedback.positive {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.score-feedback.negative {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.score-feedback .points {
+  justify-content: space-between;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+.score-feedback .points .info {
+  display: flex;
+}
+.score-feedback .points .info .word {
+  font-style: italic;
+}
+
+.score-feedback .points .info .word, .username {
+  margin: auto;
+  font-weight: bold;
+}
+.score-feedback .points .info .username {
+  font-family: 'Courier New', monospace;
+}
+.score-feedback .points .message {
+  font-family: 'Courier New', monospace;
+}
+
+.score-feedback .points .message {
+  font-size: smaller;
+  font-weight: bold;
+}
+
+.score-feedback .points .value {
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  background-color: #00000031;
+  padding: 0 0.5rem;
+  border-radius: 4px;
+  text-align: center;
+  margin: auto
+}
+
+.score-feedback.positive .points {
+  background-color: #3797558d;
+}
+
+.score-feedback.negative .points {
+  background-color: #9737379c;
+}
+
+.game-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #333;
+  font-family: 'Courier New', monospace;
+  color: #888;
+}
+
+.game-container {
+  flex: 1;
+  /* Pushes footer to the bottom */
+}
+
+.rules-container h3 {
+  font-size: 1.2rem;
+  color: #4ade80;
+  /* Matching your 'poet' teal color */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  text-align: left;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.rule-item strong {
+  display: block;
+  color: #eee;
+  margin-bottom: 0.3rem;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+/* animations */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    /* transform: translate(-50%, -50%) scale(0.5); */
+    opacity: 0;
+  }
+
+  100% {
+    /* transform: translate(-50%, -50%) scale(1); */
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
