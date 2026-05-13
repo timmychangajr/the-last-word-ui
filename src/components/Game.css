@@ -18,13 +18,15 @@
 
 .game-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column; /* Stack vertically on mobile */
   width: 100%;
   gap: 1rem;
 }
 
-.buffer-parent {
-  min-height: 60vh;
+@media (min-width: 768px) {
+  .game-container {
+    flex-direction: row; /* Side-by-side on desktop */
+  }
 }
 
 .word-container {

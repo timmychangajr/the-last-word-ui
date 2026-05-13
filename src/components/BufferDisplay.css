@@ -4,14 +4,20 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   padding: 1rem;
-  /* border: 2px solid #252525; */
   margin: 0.5rem 0;
   border-radius: 8px;
   background-color: #2c2026;
   font-family: 'Courier New', monospace;
   font-size: 1.2rem;
-  /* min-height: 4rem; */
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  .buffer-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 .word-entry {
@@ -24,7 +30,7 @@
   align-items: center;
   cursor: pointer;
   background: none;
-  /* Reset button default */
+  touch-action: manipulation;
 }
 
 .word-entry.poet {
@@ -57,7 +63,6 @@
 .word-health {
   font-size: 0.75rem;
   font-family: 'Courier New', monospace;
-  /* font-weight: bold; */
   margin-left: 0.5rem;
   padding: 0.15rem 0.4rem;
   background: rgba(0, 0, 0, 0.2);

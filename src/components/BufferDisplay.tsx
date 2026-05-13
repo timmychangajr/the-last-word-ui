@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './BufferDisplay.css';
 import type { RoomUser, WordEntry } from '../types';
 
@@ -10,8 +10,22 @@ interface BufferDisplayProps {
 }
 
 const BufferDisplay: React.FC<BufferDisplayProps> = ({ buffer, mainUser, users, handleWordClick }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        left: scrollRef.current.scrollWidth,
+        behavior: 'smooth',
+      });
+    }
+  }, [buffer]);
+
   return users.map((user) => (
-    <div className="buffer-container" key={user.username}>
+    <div
+      className="buffer-container"
+      key={user.username}
+      ref={user.username === mainUser ? scrollRef : null}>
       <span className="word-username">{user.username}</span>
       {buffer.map((entry, index) => {
         const { word, username, progress_at_time, health } = entry;
@@ -20,7 +34,7 @@ const BufferDisplay: React.FC<BufferDisplayProps> = ({ buffer, mainUser, users, 
 
         return username === user.username ? (
           <button
-            key={index}
+            key={`${entry.word}_${entry.username}`}
             disabled={locked}
             className={`word-entry ${highlight}`}
             onClick={() => handleWordClick(username, progress_at_time)}
