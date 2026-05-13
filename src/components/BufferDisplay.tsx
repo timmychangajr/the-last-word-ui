@@ -27,7 +27,7 @@ const BufferDisplay: React.FC<BufferDisplayProps> = ({ buffer, mainUser, users, 
       key={user.username}
       ref={user.username === mainUser ? scrollRef : null}>
       <span className="word-username">{user.username}</span>
-      {buffer.map((entry, index) => {
+      {buffer.map(entry => {
         const { word, username, progress_at_time, health } = entry;
         const locked = progress_at_time < user.progress - 1;
         const highlight = mainUser === username ? 'poet' : 'noise';
