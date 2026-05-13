@@ -21,7 +21,7 @@ const Game: React.FC = () => {
     const [playerReady, setPlayerReady] = useState(false);
     const [scoreFeedbacks, setScoreFeedbacks] = useState<ScoreFeedback[]>([]);
     const cableRef = useRef<ReturnType<typeof createConsumer> | null>(null);
-    const channelRef = useRef<{ unsubscribe: () => void; perform: (action: string, payload: unknown) => void } | null>(null);
+    const channelRef = useRef<{ unsubscribe: () => void; perform: (action: string, data?: object) => void } | null>(null);
 
     const currentUser = roomUsers.find(u => u.username === username);
     const currentProgress = currentUser?.progress || 0;
