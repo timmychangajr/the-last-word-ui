@@ -10,9 +10,7 @@ interface BufferUserDisplayProps {
 const BufferUserDisplay: React.FC<BufferUserDisplayProps> = ({ mainUser, users }) => {
     return (
         <div className='user-container'>
-            <p className="user-header">Players</p>
             {users.map((user, index) => {
-                // Same logic as BufferDisplay: you are the 'poet', others are 'noise'
                 const userTypeClass = mainUser === user.username ? 'poet' : 'noise';
 
                 return (

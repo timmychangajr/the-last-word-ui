@@ -1,27 +1,39 @@
 /* src/components/BufferDisplay.css */
 .buffer-container {
-  display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  overflow-x: auto;
   padding: 1rem;
-  margin: 0.5rem 0;
-  border-radius: 8px;
-  background-color: #2c2026;
-  font-family: 'Courier New', monospace;
-  font-size: 1.2rem;
-  align-items: center;
+  border-bottom: 1px solid #333;
+  min-height: 80px;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;  
+  scrollbar-width: none;
+}
+
+.buffer-container:has(.poet) {
+  background: rgba(0, 123, 255, 0.05);
+  border-left: 3px solid #007bff;
+}
+.buffer-container:has(.noise) {
+  background: rgba(0, 0, 0, 0.226);
+  border-left: 3px solid #636363;
 }
 
 @media (max-width: 768px) {
   .buffer-container {
+    display: flex;
     flex-wrap: nowrap;
+    flex-direction: row;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
 }
 
 .word-entry {
-  display: flex;
   gap: 0.25rem;
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
@@ -67,6 +79,7 @@
   padding: 0.15rem 0.4rem;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
+  white-space: nowrap;
 }
 
 .word-health.locked {

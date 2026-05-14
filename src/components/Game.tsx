@@ -159,7 +159,7 @@ const Game: React.FC = () => {
             </div>
 
             {!isInGame ? (
-                <div>
+                <div className='home'>
                     <input
                         type="text"
                         placeholder="Username (max 6 characters)"
@@ -181,7 +181,28 @@ const Game: React.FC = () => {
                 </div>
             ) : (
                 <div className="game-container">
-                    <BufferUserDisplay users={roomUsers} mainUser={username} />
+                    <div className='side-panel'>
+                        <BufferUserDisplay users={roomUsers} mainUser={username} />
+                        <div className='activity-log'>
+                            <p className="log-header">Activity Log</p>
+                            <div className="log-entries">
+                                {scoreFeedbacks.map((feedback, idx) => (
+                                    <div
+                                        className={`score-feedback ${feedback.points ? (feedback.points >= 0 ? 'positive' : 'negative') : ''}`}
+                                        key={idx}>
+                                        <div className='points'>
+                                            <div className='info'>
+                                                {feedback.username && <p className="username">{feedback.username}</p>}
+                                                <p className="word">{feedback.word}</p>
+                                            </div>
+                                            {feedback.message && <p className='message'>{feedback.message}</p>}
+                                            {!!feedback.points && <p className="value">{feedback.points > 0 ? '+' : ''}{feedback.points} HP</p>}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
 
                     <div className="word-container">
                         <p>Room Code: <strong>{roomCode}</strong></p>
@@ -189,6 +210,7 @@ const Game: React.FC = () => {
                         {/* Gameplay Area (Only visible when allReady is true) */}
                         <>
                             {!winner && allReady && <p>Sentence: <strong>{targetQuote}</strong></p>}
+                            <br />
                             <div className='buffer-parent'>
                                 <BufferDisplay
                                     buffer={buffer}
@@ -248,26 +270,6 @@ const Game: React.FC = () => {
                             )}
 
                             <button onClick={playAgain} className="exit-btn">Leave Game</button>
-                        </div>
-                    </div>
-
-                    <div className='activity-log'>
-                        <p className="log-header">Activity Log</p>
-                        <div className="log-entries">
-                            {scoreFeedbacks.map((feedback, idx) => (
-                                <div
-                                    className={`score-feedback ${feedback.points ? (feedback.points >= 0 ? 'positive' : 'negative') : ''}`}
-                                    key={idx}>
-                                    <div className='points'>
-                                        <div className='info'>
-                                            {feedback.username && <p className="username">{feedback.username}</p>}
-                                            <p className="word">{feedback.word}</p>
-                                        </div>
-                                        {feedback.message && <p className='message'>{feedback.message}</p>}
-                                        {!!feedback.points && <p className="value">{feedback.points > 0 ? '+' : ''}{feedback.points} HP</p>}
-                                    </div>
-                                </div>
-                            ))}
                         </div>
                     </div>
                 </div>

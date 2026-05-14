@@ -1,6 +1,8 @@
 /* src/components/Game.css */
 .app-header {
   display: flex;
+  border-bottom: 2px solid #5b5b5b5a;
+  margin-bottom: 1rem;
 }
 
 .app-header h1 {
@@ -8,34 +10,100 @@
 }
 
 .game {
-  max-width: 90%;
+  max-width: 80%;
   margin: 0 auto;
   padding: 1rem;
-  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
+  justify-content: flex-start; 
+  align-items: stretch;
+  min-height: 100svh;
 }
 
 .game-container {
-  display: flex;
-  flex-direction: column; /* Stack vertically on mobile */
+display: flex;
+  flex-direction: row;
   width: 100%;
   gap: 1rem;
+  align-items: flex-start;
 }
 
 @media (min-width: 768px) {
   .game-container {
-    flex-direction: row; /* Side-by-side on desktop */
+    flex-direction: row;
+  }
+}
+
+.side-panel {
+  /* display: flex; */
+  padding: 0;
+  flex-direction: column;
+  gap: 1rem;
+  /* min-width: 250px; */
+}
+
+/* Mobile Reordering Logic */
+@media (max-width: 1024px) {
+  .game {
+    max-width: 95%;
+  }
+}
+
+/* Mobile Reordering Logic */
+@media (max-width: 768px) {
+  .game {
+    height: 100vh;
+    padding: 0.5rem;
+  }
+
+  .buffer-parent {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .game input {
+    position: sticky;
+    bottom: 10px;
+    width: 95%;
+    z-index: 20;
+  }
+
+  .game-container {
+    flex-direction: column;
+  }
+
+  .side-panel {
+    display: contents;
+  }
+
+  .user-container {
+    order: 1;
+  }
+
+  .word-container {
+    order: 2;
+  }
+
+  .activity-log {
+    order: 3;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .log-entries {
+    max-height: 150px;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+
+  .log-entries::-webkit-scrollbar {
+    display: none;
   }
 }
 
 .word-container {
   width: 100%;
-  /* margin: auto; */
   text-align: left;
-  /* min-height: 100vh; */
-  /* justify-content: center;
-  align-items: center; */
 }
 
 .game h1 {
@@ -51,8 +119,10 @@
   font-weight: bold;
 }
 
-.game input {
-  padding: 0.5rem;
+input {
+  height: 30px;
+  min-width: 300px;
+  padding: 0.5rem 1rem;
   margin-top: 0.5rem;
   border-color: rgb(41, 41, 41);
   border: 2px solid #5b5b5b;
@@ -62,8 +132,11 @@
 
 .input-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 1rem;
+  white-space: nowrap;
+  margin-top: 1rem;
 }
 
 .winner {
@@ -71,7 +144,7 @@
   text-align: center;
   font-weight: bold;
   font-size: 1rem;
-  margin: 0;
+  margin: 2rem;
   animation: pulse 1s ease-in-out infinite;
 }
 
@@ -127,6 +200,11 @@
   align-items: center;
 }
 
+.ready-section button, .home button {
+  min-width: 150px;
+  min-height: 50px;
+}
+
 .waiting-text {
   font-size: 1.1rem;
   color: #a78bfa;
@@ -135,12 +213,15 @@
 }
 
 .activity-log {
-  padding: 0.5rem;
   background: rgba(0, 0, 0, 0.2);
   border: 2px solid #333;
   border-radius: 8px;
   margin-top: 0.5rem;
-  min-width: 200px;
+  min-width: 250px;
+}
+
+.log-entries {
+  padding: 0 0.5rem;
 }
 
 .activity-log text {
@@ -153,7 +234,7 @@
   font-weight: bold;
   color: #888;
   border-bottom: 3px solid #333;
-  padding-bottom: 0.5rem;
+  padding: 0.5rem 0;
 }
 
 /* activity log messages*/
@@ -186,17 +267,21 @@
 .score-feedback .points .info {
   display: flex;
 }
+
 .score-feedback .points .info .word {
   font-style: italic;
 }
 
-.score-feedback .points .info .word, .username {
+.score-feedback .points .info .word,
+.username {
   margin: auto;
   font-weight: bold;
 }
+
 .score-feedback .points .info .username {
   font-family: 'Courier New', monospace;
 }
+
 .score-feedback .points .message {
   font-family: 'Courier New', monospace;
 }
@@ -227,6 +312,7 @@
 .game-footer {
   margin-top: 3rem;
   padding-top: 1.5rem;
+  padding-bottom: 3rem;
   border-top: 1px solid #333;
   font-family: 'Courier New', monospace;
   color: #888;
@@ -234,13 +320,11 @@
 
 .game-container {
   flex: 1;
-  /* Pushes footer to the bottom */
 }
 
 .rules-container h3 {
   font-size: 1.2rem;
   color: #4ade80;
-  /* Matching your 'poet' teal color */
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 1rem;
@@ -270,8 +354,8 @@
   }
 
   50% {
-    transform: scale(1.05);
-    opacity: 0.8;
+    transform: scale(1.01);
+    opacity: 0.6;
   }
 }
 
@@ -290,12 +374,10 @@
 
 @keyframes popIn {
   0% {
-    /* transform: translate(-50%, -50%) scale(0.5); */
     opacity: 0;
   }
 
   100% {
-    /* transform: translate(-50%, -50%) scale(1); */
     opacity: 1;
   }
 }

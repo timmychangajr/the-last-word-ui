@@ -21,20 +21,21 @@ const BufferDisplay: React.FC<BufferDisplayProps> = ({ buffer, mainUser, users, 
     }
   }, [buffer]);
 
-  return users.map((user) => (
+  return users.map((user) => {
+    const highlight = mainUser === user.username ? 'poet' : 'noise';
+    return (
     <div
       className="buffer-container"
       key={user.username}
       ref={user.username === mainUser ? scrollRef : null}>
       <span className="word-username">{user.username}</span>
-      {buffer.map(entry => {
+      {buffer.map((entry, index) => {
         const { word, username, progress_at_time, health } = entry;
         const locked = progress_at_time < user.progress - 1;
-        const highlight = mainUser === username ? 'poet' : 'noise';
 
         return username === user.username ? (
           <button
-            key={`${entry.word}_${entry.username}`}
+            key={index}
             disabled={locked}
             className={`word-entry ${highlight}`}
             onClick={() => handleWordClick(username, progress_at_time)}
@@ -50,7 +51,7 @@ const BufferDisplay: React.FC<BufferDisplayProps> = ({ buffer, mainUser, users, 
         ) : null;
       })}
     </div>
-  ));
+  )});
 };
 
 export default BufferDisplay;
