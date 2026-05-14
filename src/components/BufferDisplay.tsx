@@ -35,7 +35,7 @@ const BufferDisplay: React.FC<BufferDisplayProps> = ({ buffer, mainUser, users, 
 
         return username === user.username ? (
           <button
-            key={index}
+            key={`${index}_${username}`}
             disabled={locked}
             className={`word-entry ${highlight}`}
             onClick={() => handleWordClick(username, progress_at_time)}
