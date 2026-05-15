@@ -18,7 +18,6 @@ const Game: React.FC = () => {
     const [targetQuote, setTargetQuote] = useState('');
     const [gameOver, setGameOver] = useState(false);
     const [winner, setWinner] = useState<string | undefined | null>(null);
-    const [playerReady, setPlayerReady] = useState(false);
     const [scoreFeedbacks, setScoreFeedbacks] = useState<ScoreFeedback[]>([]);
     const cableRef = useRef<ReturnType<typeof createConsumer> | null>(null);
     const channelRef = useRef<{ unsubscribe: () => void; perform: (action: string, data?: object) => void } | null>(null);
@@ -30,7 +29,6 @@ const Game: React.FC = () => {
     useEffect(() => {
         if (!cableRef.current) {
             const baseCableUrl = import.meta.env.VITE_CABLE_URL || 'ws://localhost:3000/cable';
-            // Forcing the /cable path if it's missing from the env variable
             const finalCableUrl = baseCableUrl.endsWith('/cable') ? baseCableUrl : `${baseCableUrl}/cable`;
 
             cableRef.current = createConsumer(finalCableUrl);
@@ -46,9 +44,15 @@ const Game: React.FC = () => {
     const allReady = useMemo(() => {
         return roomUsers.length >= 2 && roomUsers.every(u => u.ready);
     }, [roomUsers]);
+    const someReady = useMemo(() => {
+        return roomUsers.length >= 2 && roomUsers.some(u => u.ready);
+    }, [roomUsers]);
     const isWaitingForUser = useMemo(() => {
-        return roomUsers.length >= 2 && roomUsers.some(u => u.ready) && !playerReady && !allReady;
-    }, [roomUsers, playerReady, allReady]);
+        return roomUsers.length >= 2 
+        && roomUsers.some(u => currentUser?.username === u.username && !u.ready);
+    }, [roomUsers, currentUser]);
+        const isValidRoom = useMemo(() => roomUsers.length >= 2, [roomUsers])
+    const isWaitingForOthers = useMemo(() => isValidRoom && !isWaitingForUser && !allReady, [isValidRoom, isWaitingForUser, allReady])
 
     useEffect(() => {
         if (isInGame && roomCode && cableRef.current) {
@@ -65,7 +69,6 @@ const Game: React.FC = () => {
                         if (data.game_reset) {
                             setGameOver(false);
                             setWinner(null);
-                            setPlayerReady(false);
                             setTargetQuote(data.target_quote || '');
                             setBuffer([]);
                             setScoreFeedbacks([]);
@@ -77,7 +80,6 @@ const Game: React.FC = () => {
 
                         if (data.winner && !gameOver) {
                             setGameOver(true);
-                            setPlayerReady(false); // Reset local ready state for post-game button
                         }
                     },
                 }
@@ -90,7 +92,7 @@ const Game: React.FC = () => {
                 channelRef.current = null;
             }
         };
-    }, [isInGame, roomCode, gameOver, username]);
+    }, [isInGame, roomCode, username]);
 
     const createRoom = async () => {
         if (!username.trim()) { alert('Please enter a username'); return; }
@@ -106,7 +108,7 @@ const Game: React.FC = () => {
         if (!joinRoomCode.trim() || joinRoomCode.length < 4) { alert('Please enter a valid room code'); return; }
         const response = await fetch(`${API_BASE}/rooms/${joinRoomCode}`);
         const data = await response.json();
-        if (data.error) { alert('Room not found'); return; }
+        if (data.error) { alert(data.error ?? 'Room not found'); return; }
         setRoomCode(joinRoomCode);
         setBuffer(data.buffer);
         setTargetQuote(data.target_quote);
@@ -140,24 +142,32 @@ const Game: React.FC = () => {
         if (e.key === 'Enter') { e.preventDefault(); joinRoom(); }
     };
 
-    const playAgain = () => {
-        setGameOver(false); setWinner(null); setIsInGame(false); setRoomCode(''); setBuffer([]); setRoomUsers([]); setWordInput(''); setPlayerReady(false);
+    const leaveGame = () => {
+        setGameOver(false);
+        setWinner(null);
+        setIsInGame(false);
+        setRoomCode('');
+        setBuffer([]);
+        setRoomUsers([]);
+        setWordInput('');
+        if (channelRef.current) {
+            channelRef.current.perform("leave_room", { username });
+            channelRef.current.unsubscribe();
+        }
+
     };
 
     const markReady = () => {
         if (channelRef.current) {
             channelRef.current.perform("player_ready", { username: username });
-            setPlayerReady(true);
         }
     };
-
 
     return (
         <div className="game">
             <div className='app-header'>
                 <h1>The Last Word</h1>
             </div>
-
             {!isInGame ? (
                 <div className='home'>
                     <input
@@ -203,11 +213,8 @@ const Game: React.FC = () => {
                             </div>
                         </div>
                     </div>
-
                     <div className="word-container">
                         <p>Room Code: <strong>{roomCode}</strong></p>
-
-                        {/* Gameplay Area (Only visible when allReady is true) */}
                         <>
                             {!winner && allReady && <p>Sentence: <strong>{targetQuote}</strong></p>}
                             <br />
@@ -219,7 +226,6 @@ const Game: React.FC = () => {
                                     handleWordClick={handleWordClick}
                                 />
                             </div>
-
                             {!winner && allReady && nextRequiredWord && (
                                 <div className='input-container'>
                                     <input
@@ -236,8 +242,6 @@ const Game: React.FC = () => {
                                 </div>
                             )}
                         </>
-
-                        {/* Winner Display */}
                         {winner && (
                             <h2 className='winner'>
                                 {winner.includes(',')
@@ -246,30 +250,21 @@ const Game: React.FC = () => {
                                 }
                             </h2>
                         )}
-
                         <div className="ready-section">
-                            {/* Show button if:
-                                1. Not all players are ready yet (Lobby)
-                                2. OR there is a winner (Post-game)
-                                3. AND the current local player hasn't clicked ready yet
-                            */}
-
-                            {playerReady && !allReady && (
+                            {isWaitingForOthers && (
                                 <p className="waiting-text">Waiting for opponents...</p>
                             )}
-                            {isWaitingForUser && (
+                            {isWaitingForUser && someReady && (
                                 <p className="waiting-text">Opponents are ready...</p>
                             )}
-                            {(!allReady || winner) && !playerReady && roomUsers.length >= 2 && (
+                            {isWaitingForUser && isValidRoom && (
                                 <button onClick={markReady} className="ready-btn">Ready Up</button>
                             )}
-
-                            {/* Show prompt if not enough players */}
-                            {roomUsers.length < 2 && (
+                            {!isValidRoom && (
                                 <p className="waiting-text">Waiting for at least 2 players to join...</p>
                             )}
 
-                            <button onClick={playAgain} className="exit-btn">Leave Game</button>
+                            <button onClick={leaveGame} className="exit-btn">Leave Game</button>
                         </div>
                     </div>
                 </div>

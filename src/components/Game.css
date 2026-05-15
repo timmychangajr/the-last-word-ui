@@ -15,13 +15,13 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   align-items: stretch;
   min-height: 100svh;
 }
 
 .game-container {
-display: flex;
+  display: flex;
   flex-direction: row;
   width: 100%;
   gap: 1rem;
@@ -35,11 +35,9 @@ display: flex;
 }
 
 .side-panel {
-  /* display: flex; */
   padding: 0;
   flex-direction: column;
   gap: 1rem;
-  /* min-width: 250px; */
 }
 
 /* Mobile Reordering Logic */
@@ -200,7 +198,8 @@ input {
   align-items: center;
 }
 
-.ready-section button, .home button {
+.ready-section button,
+.home button {
   min-width: 150px;
   min-height: 50px;
 }
@@ -222,6 +221,9 @@ input {
 
 .log-entries {
   padding: 0 0.5rem;
+  padding-bottom: 0.25rem;
+  overflow-y: auto;
+  max-height: 400px;
 }
 
 .activity-log text {

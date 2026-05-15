@@ -22,7 +22,8 @@ const BufferDisplay: React.FC<BufferDisplayProps> = ({ buffer, mainUser, users, 
   }, [buffer]);
 
   return users.map((user) => {
-    const highlight = mainUser === user.username ? 'poet' : 'noise';
+    const isCurrentUser = mainUser === user.username
+    const highlight = isCurrentUser ? 'poet' : 'noise';
     return (
     <div
       className="buffer-container"
@@ -38,7 +39,7 @@ const BufferDisplay: React.FC<BufferDisplayProps> = ({ buffer, mainUser, users, 
             key={`${index}_${username}`}
             disabled={locked}
             className={`word-entry ${highlight}`}
-            onClick={() => handleWordClick(username, progress_at_time)}
+            onClick={() => isCurrentUser ? null : handleWordClick(username, progress_at_time)}
           >
             <span className="word-text">{word}</span>
             {!locked && (
